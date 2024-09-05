@@ -1,5 +1,6 @@
 package org.example
 
 fun main() {
-    println("Hello World!")
+    val generate = GenerateAst()
+    generate.main(arrayOf("C:\\Users\\Admin\\Desktop\\Work\\Kotlin\\kLox\\src\\main\\kotlin"))
 }

@@ -2,10 +2,10 @@ package org.example
 
 
 data class Token(
-	final val type    : TokenType,
-	final val lexeme  : String,
-	final val literal : Any,
-	final val line    : Int,
+	val type    : TokenType,
+	val lexeme  : String,
+	val literal : Any,
+	val line    : Int,
 ) {
 	override fun toString() : String {
 		return "$type $lexeme $literal"
