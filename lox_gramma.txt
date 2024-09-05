@@ -1,0 +1,56 @@
+-- Entry point.
+program    -> declaration* EOF ;
+
+block      -> "{" declaration "}" ;
+
+-- Declarations.
+declaration-> classDecal | funDecal | varDecal | statment ;
+varDecal   -> "var" IDENTIFIER ( "=" expression )? ";" ;
+
+-- Classes.
+classDecal -> "class" IDENTIFIER "{" function* "}" ;
+
+-- Functions.
+funDecal   -> "fun" function ;
+function   -> IDENTIFIER "(" parametrs? ")" block ;
+
+-- Statments.
+statment   -> exprStmt | forStmt | ifStmt | printStmt
+| whileStmt|  block  | ifStmt | returnStmt ;
+ifStmt     -> "if" "(" expression ")" statment ( "else" statment)? ;
+exprStmt   -> expression ";" ;
+printStmt  -> "print" expression ";" ;
+returnStmt -> "return" expression? ";" ;
+
+-- Loops
+forStmt    -> "for" "(" (varDecal | exprStmt | ";")
+expression? ";" expression? ")"
+statment ;
+whileStmt  -> "while" "(" expression ")" statment ;
+
+-- Expressions.
+expression -> equality ;
+assignment -> ( call "." )? IDENTIFIER "=" assignment
+| logic_or ;
+
+-- Logical operators.
+logic_or   -> logic_and ( "or" logic_and)* ;
+logic_and  -> equality ( "and" equality)*  ;
+
+-- Binary operations.
+equality   -> comparison ( ( "!=" | "==" ) comparison )* ;
+comparison -> term ( ( ">" | ">=" | "<=" | "<" ) term )* ;
+term       -> factor ( ( "-" | "+" ) factor)* ;
+factor     -> unary ( ( "/" | "*" ) unary)* ;
+
+-- Unary operations.
+unary      -> ( "!" | "-" ) unary | primary ;
+call       -> primary ( "(" arguments? ")"  | "." IDENTIFIER )* ;
+
+-- Function call.
+arguments  -> expression ( "," expression )*  ;
+parametrs  -> IDENTIFIER ( "," IDENTIFIER )* ;
+
+-- Terminals.
+primary    -> NUMBER | STRING | "true" | "false" | "nil"
+| IDENTIFIER | "(" expression ")" ;
