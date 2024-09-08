@@ -1,6 +1,10 @@
 package org.example
 
 
+/**
+ * Scanner (Lexer) class.
+ * Runs through the code and produces tokens.
+ */
 class Scanner (
 	private val source : String,
 	private val tokens : ArrayList<Token> = arrayListOf()
@@ -10,6 +14,7 @@ class Scanner (
 	private var current : Int = 0
 	private var line    : Int = 1
 
+	// One to one map of string to token type.
 	private final val keywords : Map<String, TokenType> =
 		hashMapOf<String, TokenType>().apply {
 			put("fun", TokenType.FUN)

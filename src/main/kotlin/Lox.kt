@@ -8,12 +8,16 @@ import java.nio.file.Paths
 import kotlin.system.exitProcess
 
 
+/**
+ * Main Lox object.
+ * Lox programs run through it.
+ */
 object Lox {
 
 	private var hadError : Boolean = false
 
 	// Main entry point for the program.
-	fun main(args : Array<String>): Unit {
+	fun entry(args : Array<String>): Unit {
 		if (args.size > 1) {
 			println("Usage: kLox [script]")
 			exitProcess(64)

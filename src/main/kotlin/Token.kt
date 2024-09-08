@@ -1,6 +1,9 @@
 package org.example
 
-
+/**
+ * Token data class.
+ * All tokens use it :)
+ */
 data class Token(
 	val type    : TokenType,
 	val lexeme  : String,
