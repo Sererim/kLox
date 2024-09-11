@@ -22,7 +22,7 @@ object AstPrinter : Expr.Visitor<String> {
 	}
 
 	override fun visitLiteralExpr(expr: Expr.Literal): String {
-		return if (expr.value.equals(null)) "nil"
+		return if (expr.value!!.equals(null)) "nil"
 					 else expr.value.toString()
 	}
 

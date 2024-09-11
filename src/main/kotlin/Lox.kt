@@ -1,5 +1,6 @@
 package org.example
 
+import com.sun.javafx.fxml.expression.Expression
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.Charset
@@ -16,23 +17,12 @@ object Lox {
 
 	private var hadError : Boolean = false
 
-	// Main entry point for the program.
-	fun entry(args : Array<String>): Unit {
-		if (args.size > 1) {
-			println("Usage: kLox [script]")
-			exitProcess(64)
-		} else if (args.size == 1) {
-			runFile(args[0])
-		} else {
-			runPrompt()
-		}
-	}
 
 	/**
 	 * Function that evaluates the content of a file with Lox code.
 	 * @param file a valid path to a file with Lox code.
 	 */
-	private fun runFile(file : String) : Unit {
+	fun runFile(file : String) : Unit {
 		val bytes : ByteArray = Files.readAllBytes(Paths.get(file))
 		evaluate(String(bytes, Charset.defaultCharset()))
 
@@ -41,10 +31,11 @@ object Lox {
 
 	}
 
+
 	/**
 	 * Main function for Lox REPL.
 	 */
-	private fun runPrompt() : Unit {
+	fun runPrompt() : Unit {
 		val input  = InputStreamReader(System.`in`)
 		val reader = BufferedReader(input)
 		var line : String = ""
@@ -66,16 +57,24 @@ object Lox {
 	private fun evaluate(source: String) : Unit {
 		val scanner = Scanner(source)
 		val tokens : List<Token> = scanner.scanTokens()
+		val parser = Parser(tokens)
+		val expr : Expr? = parser.parse()
 
-		tokens.forEach {
-			token : Token -> {
-				println(token)
-			}
-		}
+		if (hadError) return
+
+		println(AstPrinter.print(expr!!))
 	}
 
 	fun error(line : Int, message : String) : Unit {
 		report(line, "", message)
+	}
+
+	fun error(token: Token, message: String) : Unit {
+		if (token.type == TokenType.EOF) {
+			report(token.line, "at end", message)
+		} else {
+			report(token.line, " at '${token.lexeme}' ", message)
+		}
 	}
 
 	private fun report(line : Int, where : String, message : String) : Unit {

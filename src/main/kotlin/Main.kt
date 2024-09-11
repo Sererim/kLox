@@ -1,14 +1,21 @@
 package org.example
 
+import org.example.Lox.runFile
+import org.example.Lox.runPrompt
+import kotlin.system.exitProcess
+
+// Main entry point for the program.
+fun entry(args : Array<String>): Unit {
+	if (args.size > 1) {
+		println("Usage: kLox [script]")
+		exitProcess(64)
+	} else if (args.size == 1) {
+		runFile(args[0])
+	} else {
+		runPrompt()
+	}
+}
 
 fun main(args : Array<String>) {
-	val expression : Expr = Expr.Binary(
-		Expr.Unary(
-			Token(TokenType.MINUS, "-", "", 1),
-			Expr.Literal(123)
-		),
-		Token(TokenType.STAR, "*", "", 1),
-		Expr.Grouping(Expr.Literal(45.67))
-	)
-	println(AstPrinter.print(expression))
+	runPrompt()
 }
